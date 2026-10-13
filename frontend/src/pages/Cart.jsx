@@ -9,6 +9,7 @@ const Cart = () => {
     food_list,
     removeFromCart,
     getTotalCartAmount,
+    url
   } = useContext(StoreContex)
 
   const navigate = useNavigate()
@@ -37,7 +38,7 @@ const Cart = () => {
                   <div className="flex items-center gap-3">
                     <img
                       className="h-12 w-12 rounded-lg object-cover"
-                      src={item.image}
+                      src={url+"/images/"+item.image}
                       alt={item.name}
                     />
                     <p className="font-medium">{item.name}</p>

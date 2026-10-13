@@ -5,15 +5,14 @@ import { assets } from '../assets/frontend_assets/assets'
 import { StoreContex } from '../contex/StoreContex'
 
 const FoodItems = ({ id, name, price, description, image }) => {
-  const [itemCount, setItemCount] = useState(0)
-  const { cartItems, addToCart, removeFromCart } = useContext(StoreContex)
+  const { cartItems, addToCart, removeFromCart, url } = useContext(StoreContex)
 
   return (
     <div className="food-card w-full">
       <div className="relative overflow-hidden">
         <img
           className="food-image transition duration-500 hover:scale-[1.03]"
-          src={image}
+          src={url+"/images/"+image}
           alt={name}
         />
 
@@ -65,7 +64,7 @@ const FoodItems = ({ id, name, price, description, image }) => {
         </p>
 
         <p className="my-3 text-xl font-bold text-orange-500">
-          {price}
+          ₹{price}
         </p>
       </div>
     </div>

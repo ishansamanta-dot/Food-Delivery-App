@@ -1,14 +1,51 @@
 
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { assets } from '../assets/frontend_assets/assets'
+import {StoreContex} from '../contex/StoreContex'
+import axios from 'axios'
 
 const LoginPopup = ({ setShowLogin }) => {
-  const [currState, setCurrState] = useState('Sign Up')
+
+  const {url,setToken} =useContext(StoreContex) 
+
+  const [currState, setCurrState] = useState('Login')
+  const [data,setData]=useState({
+    name:"",
+    email:"",
+    password:""    
+  })
+
+  const onChangeHandler = (event)=>{
+    const name=event.target.name
+    const value=event.target.value
+    setData(data=>({...data,[name]:value}))
+  }
+
+  const onLogin =async (e) =>{
+    e.preventDefault()
+    let newUrl=url
+    if(currState==="Login"){
+      newUrl+="/api/user/login"
+    }
+    else{
+      newUrl+="/api/user/register"
+    }
+
+    const response= await axios.post(newUrl,data)
+        if(response.data.success){
+      setToken(response.data.token)
+      localStorage.setItem("token",response.data.token)
+      setShowLogin(false)
+    }
+    else{
+      alert(response.data.message)
+    }
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
       <form
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={onLogin}
         className="animate-fade-up w-full max-w-md rounded-2xl border border-white/10 bg-[#1c1c1c] p-6 text-sm text-gray-300 shadow-2xl sm:p-8"
       >
         <div className="mb-7 flex items-center justify-between">
@@ -28,21 +65,30 @@ const LoginPopup = ({ setShowLogin }) => {
             <input
               className="w-full rounded-lg border border-white/10 bg-[#111111] p-3 text-white outline-none transition placeholder:text-gray-500 focus:border-orange-500"
               type="text"
+              name='name'
+              onChange={onChangeHandler}
+              value={data.name}
               placeholder="Your name"
               required
             />
           )}
 
-          <input
+          <input 
             className="w-full rounded-lg border border-white/10 bg-[#111111] p-3 text-white outline-none transition placeholder:text-gray-500 focus:border-orange-500"
             type="email"
+            name='email'
+            onChange={onChangeHandler}
+            value={data.email}
             placeholder="Your email"
             required
           />
 
-          <input
+          <input 
             className="w-full rounded-lg border border-white/10 bg-[#111111] p-3 text-white outline-none transition placeholder:text-gray-500 focus:border-orange-500"
             type="password"
+            name='password'
+            onChange={onChangeHandler}
+            value={data.password}
             placeholder="Password"
             required
           />

@@ -1,9 +1,30 @@
 
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StoreContex } from '../contex/StoreContex'
 
 const PlaceOrder = () => {
-  const { getTotalCartAmount } = useContext(StoreContex)
+  const { getTotalCartAmount, token,food_list,cartItems,url } = useContext(StoreContex)
+
+  const [data,setData]=useState({
+    firstName:"",
+    lastName:"",
+    email:"",
+    street:"",
+    city:"",
+    state:"",
+    pincode:"",
+    phone:""
+  })
+
+  const onChangeHandler=(e)=>{
+    const name=e.target.name
+    const value=e.target.value
+    setData(data=>({...data,[name]:value}))
+  }
+
+  const placeOrder=async (e)=>{
+    e.preventDefault()
+  }
 
   const inputClass =
     'w-full rounded-lg border border-white/10 bg-[#111111] px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-orange-500'
@@ -13,7 +34,7 @@ const PlaceOrder = () => {
       <h1 className="mb-8 text-3xl font-bold text-white">Checkout</h1>
 
       <form
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={placeOrder}
         className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:gap-12"
       >
         <section className="rounded-2xl border border-white/10 bg-[#1c1c1c] p-6 sm:p-8">
@@ -24,12 +45,13 @@ const PlaceOrder = () => {
           <div className="flex flex-col gap-4">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <input
+              name='firstName' onChange={onChangeHandler} value={data.firstName}
                 className={inputClass}
                 type="text"
                 placeholder="First Name"
                 required
               />
-              <input
+              <input name='lastName' onChange={onChangeHandler} value={data.lastName}
                 className={inputClass}
                 type="text"
                 placeholder="Last Name"
@@ -37,14 +59,14 @@ const PlaceOrder = () => {
               />
             </div>
 
-            <input
+            <input name='email' onChange={onChangeHandler} value={data.email}
               className={inputClass}
               type="email"
               placeholder="Email address"
               required
             />
 
-            <input
+            <input name='street' onChange={onChangeHandler} value={data.street}
               className={inputClass}
               type="text"
               placeholder="Street"
@@ -52,13 +74,13 @@ const PlaceOrder = () => {
             />
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <input
+              <input name='city' onChange={onChangeHandler} value={data.city}
                 className={inputClass}
                 type="text"
                 placeholder="City"
                 required
               />
-              <input
+              <input name='state' onChange={onChangeHandler} value={data.state}
                 className={inputClass}
                 type="text"
                 placeholder="State"
@@ -67,13 +89,13 @@ const PlaceOrder = () => {
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <input
+              <input name='pincode' onChange={onChangeHandler} value={data.pincode}
                 className={inputClass}
-                type="text"
+                type="number"
                 placeholder="PIN Code"
                 required
               />
-              <input
+              <input name='phone' onChange={onChangeHandler} value={data.phone}
                 className={inputClass}
                 type="tel"
                 placeholder="Phone"

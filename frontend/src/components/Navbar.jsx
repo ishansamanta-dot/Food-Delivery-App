@@ -1,10 +1,15 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { assets } from "../assets/frontend_assets/assets.js";
 import { StoreContex } from "../contex/StoreContex.jsx";
 
-const navbar = ({ setShowLogin }) => {
+const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("Home");
+
+  const { getTotalCartAmount, token, setToken } =
+    useContext(StoreContex);
+
+  const navigate = useNavigate();
 
   const scrollToSection = (sectionId, menuName) => {
     setMenu(menuName);
@@ -20,7 +25,11 @@ const navbar = ({ setShowLogin }) => {
     });
   };
 
-  const { getTotalCartAmount } = useContext(StoreContex);
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken("");
+    navigate("/");
+  };
 
   return (
     <nav className="sticky top-0 z-40 border-b border-white/10 bg-[#111111]/95 px-[5%] py-4 backdrop-blur-md">
@@ -70,23 +79,65 @@ const navbar = ({ setShowLogin }) => {
           />
 
           <Link to="/cart" className="relative">
-            <img className="w-6" src={assets.basket_icon} alt="Basket" />
+            <img
+              className="w-6"
+              src={assets.basket_icon}
+              alt="Basket"
+            />
 
             {getTotalCartAmount() > 0 && (
               <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full border-2 border-[#111111] bg-orange-500" />
             )}
           </Link>
 
-          <button
-            onClick={() => setShowLogin(true)}
-            className="rounded-full border border-orange-500 px-3 py-2 text-xs text-white transition hover:bg-orange-500 sm:px-6 sm:text-sm"
-          >
-            Sign in
-          </button>
+          {!token ? (
+            <button
+              onClick={() => setShowLogin(true)}
+              className="rounded-full border border-orange-500 px-3 py-2 text-xs text-white transition hover:bg-orange-500 sm:px-6 sm:text-sm"
+            >
+              Sign in
+            </button>
+          ) : (
+            <div className="group relative cursor-pointer">
+              <img
+                className="w-7"
+                src={assets.profile_icon || assets.parcel_icon}
+                alt="Profile"
+              />
+
+              <ul className="absolute right-0 top-full z-50 hidden min-w-36 flex-col gap-3 rounded-lg border border-white/10 bg-[#1c1c1c] p-3 text-sm text-gray-300 shadow-xl group-hover:flex">
+                <li
+                  onClick={() => navigate("/myorders")}
+                  className="flex items-center gap-2 whitespace-nowrap transition hover:text-orange-500"
+                >
+                  <img
+                    className="w-5"
+                    src={assets.bag_icon}
+                    alt=""
+                  />
+                  <p>Orders</p>
+                </li>
+
+                <hr className="border-white/10" />
+
+                <li
+                  onClick={logout}
+                  className="flex items-center gap-2 whitespace-nowrap transition hover:text-orange-500"
+                >
+                  <img
+                    className="w-5"
+                    src={assets.logout_icon}
+                    alt=""
+                  />
+                  <p>Logout</p>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </nav>
   );
 };
 
-export default navbar;
+export default Navbar;
