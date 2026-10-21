@@ -1,40 +1,38 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { toast } from 'react-toastify'
-
-const List = ({url}) => {
-  const [list, setList] = useState([])
+const List = ({ url }) => {
+  const [list, setList] = useState([]);
 
   const fetchList = async () => {
     try {
-      const response = await axios.get(`${url}/api/food/list`)
+      const response = await axios.get(`${url}/api/food/list`);
 
       if (response.data.success) {
-        setList(response.data.data)
+        setList(response.data.data);
       } else {
-        toast.error('Error fetching food list')
+        toast.error("Error fetching food list");
       }
     } catch (error) {
-      toast.error('Unable to fetch food list')
-      console.error(error)
+      toast.error("Unable to fetch food list");
+      console.error(error);
     }
-  }
+  };
 
-  const removeFood=async(foodId)=>{
-    const response=await axios.post(`${url}/api/food/remove`,{id:foodId})
-    await fetchList()
-    if (response.data.success){
-        toast.success(response.data.message)
+  const removeFood = async (foodId) => {
+    const response = await axios.post(`${url}/api/food/remove`, { id: foodId });
+    await fetchList();
+    if (response.data.success) {
+      toast.success(response.data.message);
+    } else {
+      toast.error("Error");
     }
-    else{
-        toast.error("Error")
-    }
-  }
+  };
 
   useEffect(() => {
-    fetchList()
-  }, [])
+    fetchList();
+  }, []);
 
   return (
     <div className="admin-panel mx-auto w-full max-w-[1100px]">
@@ -86,7 +84,12 @@ const List = ({url}) => {
                     ₹{items.price}
                   </p>
 
-                  <p onClick={()=>removeFood(items._id)} className="w-fit rounded-md px-2 py-1 text-base text-gray-400 transition hover:bg-red-500/10 hover:text-red-400">X</p>
+                  <p
+                    onClick={() => removeFood(items._id)}
+                    className="w-fit rounded-md px-2 py-1 text-base text-gray-400 transition hover:bg-red-500/10 hover:text-red-400"
+                  >
+                    X
+                  </p>
                 </div>
               ))
             )}
@@ -98,7 +101,7 @@ const List = ({url}) => {
         Total food items: {list.length}
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default List
+export default List;

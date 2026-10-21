@@ -8,6 +8,7 @@ const StoreContexProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
   const url = "http://localhost:3001";
   const [token, setToken] = useState("");
+  const [search, setSearch] = useState("");
   const [food_list, setFoodList] = useState([]);
 
   const addToCart = async (itemId) => {
@@ -59,13 +60,24 @@ const StoreContexProvider = (props) => {
   };
 
   const loadCartData = async (token) => {
+  try {
     const response = await axios.post(
       url + "/api/cart/get",
       {},
       { headers: { token } },
     );
-    setCartItems(response.data.cartData);
-  };
+    if (response.data.success) {
+      setCartItems(response.data.cartData || {});
+    } else {
+      // stale or invalid token
+      localStorage.removeItem("token");
+      setToken("");
+      setCartItems({});
+    }
+  } catch (error) {
+    setCartItems({});
+  }
+};
 
   useEffect(() => {
     async function loadData() {
@@ -88,6 +100,8 @@ const StoreContexProvider = (props) => {
     url,
     token,
     setToken,
+    search,
+    setSearch,
   };
   return (
     <StoreContex.Provider value={constextValue}>

@@ -2,6 +2,7 @@
 import React, { useContext } from 'react'
 import { StoreContex } from '../contex/StoreContex'
 import { useNavigate } from 'react-router-dom'
+import CartSuggestions from '../components/CartSuggestions'
 
 const Cart = () => {
   const {
@@ -124,6 +125,7 @@ const Cart = () => {
           </div>
         </section>
       </div>
+      <CartSuggestions />
     </main>
   )
 }

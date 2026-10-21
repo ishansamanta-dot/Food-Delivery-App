@@ -12,7 +12,7 @@ const Navbar = () => {
       />
 
       <div className="flex items-center gap-3">
-        <span className="hidden text-sm text-gray-400 sm:block">
+        <span className="hidden text-lg text-gray-400 sm:block">
           Admin Panel
         </span>
 

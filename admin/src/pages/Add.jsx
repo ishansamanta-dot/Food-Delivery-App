@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const Add = ({url}) => {
+const Add = ({ url }) => {
   const [image, setImage] = useState(false);
   const [data, setData] = useState({
     name: "",
@@ -36,12 +36,11 @@ const Add = ({url}) => {
         description: "",
         price: "",
         category: "Salad",
-      })
-      setImage(false)
-      toast.success(response.data.message)
-    }
-    else{
-        toast.error(response.data.message)
+      });
+      setImage(false);
+      toast.success(response.data.message);
+    } else {
+      toast.error(response.data.message);
     }
   };
 
@@ -56,7 +55,10 @@ const Add = ({url}) => {
         </p>
       </div>
 
-      <form onSubmit={onSubmitHandler} className="space-y-6 rounded-2xl border border-white/10 bg-[#1b1b1b] p-5 sm:p-8">
+      <form
+        onSubmit={onSubmitHandler}
+        className="space-y-6 rounded-2xl border border-white/10 bg-[#1b1b1b] p-5 sm:p-8"
+      >
         <div className="space-y-3">
           <p className="text-sm font-medium text-gray-200">Upload Image</p>
 
