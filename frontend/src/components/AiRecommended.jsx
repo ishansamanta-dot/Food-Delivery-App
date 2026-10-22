@@ -25,6 +25,7 @@ const AiRecommended = () => {
           { mode: "home" },
           { headers: { token } }
         )
+
         if (!cancelled && res.data.success) {
           setItems(res.data.items || [])
           setReply(res.data.reply || "")
@@ -43,12 +44,33 @@ const AiRecommended = () => {
   if (!token || (!loading && items.length === 0)) return null
 
   return (
-    <section className="mt-10 sm:mt-14">
-      <h2 className="text-2xl font-semibold text-white sm:text-3xl">Recommended for you</h2>
-      {reply && <p className="mt-2 text-sm text-gray-400">{reply}</p>}
+    <section className="mt-10 border-b border-white/5 pb-10 sm:mt-14 sm:pb-12">
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500/15 text-xl text-orange-400">
+          ✦
+        </span>
+
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-400">
+            Made for you
+          </p>
+          <h2 className="mt-1 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+            Recommended for you
+          </h2>
+        </div>
+      </div>
+
+      {reply && (
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-400">
+          {reply}
+        </p>
+      )}
 
       {loading ? (
-        <p className="mt-6 text-sm text-gray-500">Finding dishes you'll love...</p>
+        <div className="mt-6 rounded-xl border border-white/10 bg-[#1c1c1c] px-4 py-5 text-sm text-gray-400">
+          <span className="mr-2 inline-block h-2 w-2 animate-pulse rounded-full bg-orange-500" />
+          Finding dishes you'll love...
+        </div>
       ) : (
         <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {items.map((item) => (
